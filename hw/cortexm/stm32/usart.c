@@ -1297,7 +1297,7 @@ static int stm32f4_usart_get_irq_vector(STM32USARTState *state)
     }
 }
 
-#if 0
+#if 1
 static int stm32f4_usart_can_receive(void *obj)
 {
     STM32USARTState *state = STM32_USART_STATE((Object * )obj);
@@ -1339,8 +1339,8 @@ static void stm32f4_usart_dr_post_read_callback(Object *reg, Object *periph,
 
     peripheral_register_and_raw_value(state->reg.sr, ~USART_SR_RXNE);
     if (state->chr) {
-#if 0
-        qemu_chr_accept_input(state->chr);
+#if 1
+        qemu_chr_fe_accept_input(state->chr);
 #endif
     }
 }
@@ -1358,7 +1358,7 @@ static void stm32f4_usart_dr_post_write_callback(Object *reg, Object *periph,
     if ((cr1 & USART_CR1_UE) && (cr1 & USART_CR1_TE)) {
         if (state->chr) {
             ch = full_value; /* Use only the lower 8 bits */
-#if 0
+#if 1
             qemu_chr_fe_write_all(state->chr, &ch, 1);
 #endif
         }
@@ -1579,9 +1579,9 @@ static void stm32_usart_realize_callback(DeviceState *dev, Error **errp)
 
         // char-device callbacks.
         if (state->chr) {
-#if 0
-            qemu_chr_add_handlers(state->chr, stm32f4_usart_can_receive,
-                    stm32f4_usart_receive, NULL, obj);
+#if 1
+            qemu_chr_fe_set_handlers(state->chr, stm32f4_usart_can_receive,
+                    stm32f4_usart_receive, NULL, obj, NULL, true);
 #endif
         }
 
@@ -1646,8 +1646,8 @@ static void stm32_usart_reset_callback(DeviceState *dev)
     cm_device_parent_reset(dev, TYPE_STM32_USART);
 
     if (state->chr) {
-#if 0
-        qemu_chr_accept_input(state->chr);
+#if 1
+        qemu_chr_fe_accept_input(state->chr);
 #endif
     }
 
@@ -1671,8 +1671,15 @@ static void stm32_usart_reset_callback(DeviceState *dev)
 
 #if 0
 static Property stm32_usart_properties[] = {
-    DEFINE_PROP_CHR("chardev", STM32USARTState, chr),
-    DEFINE_PROP_END_OF_LIST()};
+        DEFINE_PROP_CHR("chardev", STM32USARTState, chr),
+        DEFINE_PROP_INT32_TYPE("port-index", STM32USARTState, port_index,
+                STM32_USART_PORT_UNDEFINED, stm32_usart_index_t),
+        DEFINE_PROP_NON_VOID_PTR("rcc", STM32USARTState, rcc, STM32RCCState *),
+        DEFINE_PROP_NON_VOID_PTR("nvic", STM32USARTState,
+                nvic, CortexMNVICState *),
+        DEFINE_PROP_NON_VOID_PTR("capabilities", STM32USARTState,
+                capabilities, const STM32Capabilities *),
+    DEFINE_PROP_END_OF_LIST() };
 #endif
 
 static void stm32_usart_class_init_callback(ObjectClass *klass, void *data)
@@ -1682,7 +1689,7 @@ static void stm32_usart_class_init_callback(ObjectClass *klass, void *data)
     dc->reset = stm32_usart_reset_callback;
     dc->realize = stm32_usart_realize_callback;
 
-    // dc->props = stm32_usart_properties;
+    //dc->props = stm32_usart_properties;
 
     // Reason: instance_init() method uses qemu_char_get_next_serial()
     // dc->cannot_instantiate_with_device_add_yet = true;
@@ -1707,4 +1714,3 @@ static void stm32_usart_register_types(void)
 }
 
 type_init(stm32_usart_register_types);
-

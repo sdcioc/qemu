@@ -1,0 +1,16 @@
+# [GNU MCU Eclipse]
+
+obj-$(CONFIG_STM62) += boards-discovery.o
+obj-$(CONFIG_STM62) += mcu.o mcus.o
+obj-$(CONFIG_STM62) += sys-bus-device.o
+obj-$(CONFIG_STM62) += rcc.o
+obj-$(CONFIG_STM62) += flash.o
+obj-$(CONFIG_STM62) += pwr.o
+obj-$(CONFIG_STM62) += gpio.o
+obj-$(CONFIG_STM62) += usart.o
+obj-$(CONFIG_STM62) += exti.o
+
+obj-$(CONFIG_STM62) += syscfg.o
+obj-$(CONFIG_STM62) += afio.o
+
+# [GNU MCU Eclipse]

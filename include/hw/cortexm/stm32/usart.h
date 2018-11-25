@@ -507,4 +507,3 @@ Object* stm32_usart_create(Object *parent, stm32_usart_index_t index);
 // ----------------------------------------------------------------------------
 
 #endif /* STM32_USART_H_ */
-

@@ -1,0 +1,8 @@
+# [GNU MCU Eclipse]
+
+obj-$(CONFIG_STM52) += stm32_p103.o
+obj-$(CONFIG_STM52) += stm32_clktree.o
+obj-$(CONFIG_STM52) += stm32_rcc.o
+obj-$(CONFIG_STM52) += stm32.o
+
+# [GNU MCU Eclipse]

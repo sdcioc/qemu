@@ -639,4 +639,3 @@ cortex_m7_core_init(CortexMCoreCapabilities *cm_info, MachineState *machine)
 }
 
 // ----------------------------------------------------------------------------
-

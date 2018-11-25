@@ -424,4 +424,3 @@ static void peripheral_register_types(void)
 type_init(peripheral_register_types);
 
 // ----------------------------------------------------------------------------
-
